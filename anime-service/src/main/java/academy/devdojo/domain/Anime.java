@@ -1,19 +1,16 @@
 package academy.devdojo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class Anime {
     private Long id;
     private String name;
-
-    public Anime(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public static List<Anime>animeList(){
         var katekyoHitmanReborn = new Anime(1L, "Katekyo Hitman Reborn");
