@@ -14,7 +14,7 @@ public class Producer {
     private Long id;
     private String name;
 
-    public static List<Producer>Producer = new ArrayList<>(
+    public static List<Producer> producers = new ArrayList<>(
         List.of(
                 new Producer(1L, "Mappa"),
                 new Producer(2L, "Kyoto Animation"),
