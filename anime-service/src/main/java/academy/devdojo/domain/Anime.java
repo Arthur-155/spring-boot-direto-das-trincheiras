@@ -1,26 +1,33 @@
 package academy.devdojo.domain;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Anime {
+    @EqualsAndHashCode.Include
     private Long id;
     private String name;
+    private LocalDateTime createdAt;
+    private static List<Anime> animes = new ArrayList<>();
 
-    public Anime(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    static {
+        var katekyoHitmanReborn = Anime.builder().id(1L).name("Katekyo Hitman Reborn").build();
+        var codeGeass = Anime.builder().id(2L).name("Code Geass").build();
+        var pokemon = Anime.builder().id(3L).name("Pokémon").build();
+        animes.addAll(List.of(katekyoHitmanReborn,codeGeass,pokemon));
     }
 
-    public static List<Anime>animeList(){
-        var katekyoHitmanReborn = new Anime(1L, "Katekyo Hitman Reborn");
-        var CodeGeass = new Anime(2L, "Code Geass");
-        var Pokemon = new Anime(3L, "Pokémon");
-        return List.of(katekyoHitmanReborn,CodeGeass,Pokemon);
+    public static List<Anime> getAnimes() {
+        return animes;
     }
-
-
 }
