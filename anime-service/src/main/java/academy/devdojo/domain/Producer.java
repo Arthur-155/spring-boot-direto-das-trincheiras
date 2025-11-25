@@ -1,26 +1,35 @@
 package academy.devdojo.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Setter
 @Getter
-@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Producer {
+    @EqualsAndHashCode.Include
     private Long id;
     private String name;
+    private LocalDateTime createdAt;
+    private static List<Producer> producers = new ArrayList<>();
 
-    public static List<Producer> producers = new ArrayList<>(
-        List.of(
-                new Producer(1L, "Mappa"),
-                new Producer(2L, "Kyoto Animation"),
-                new Producer(3L, "Mad House")
-        )
-    );
+    static {
+        var Mappa = Producer.builder().id(1L).name("Mappa").createdAt(LocalDateTime.now()).build();
+        var KyotoAnimation = Producer.builder().id(2L).name("Kyoto Animation").createdAt(LocalDateTime.now()).build();
+        var MadHouse = Producer.builder().id(3L).name("Mad House").createdAt(LocalDateTime.now()).build();
+        producers.addAll(List.of(Mappa, KyotoAnimation, MadHouse));
+    }
+
+    public static List<Producer> producers() {
+        return producers;
+    }
 
     //@JsonProperties é uma tradução de recebimento de JSON, para aceitar nomes diferentes dos cadastrados no Model
     //Consumes = pode ser setado como JSON ou XML, quer dizer que a aplicação só aceita XML ou JSON.

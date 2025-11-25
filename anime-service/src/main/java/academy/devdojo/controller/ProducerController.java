@@ -1,47 +1,67 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
+import academy.devdojo.mapper.ProducerMapper;
+import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.response.ProducerGetResponse;
+import academy.devdojo.response.ProducerPostResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 @Slf4j
 @RestController
 @RequestMapping("v1/producers")
 public class ProducerController {
 
-    @GetMapping
-    public List<Producer> ListAll(@RequestParam(required = false) String nome) {
-        var producers = Producer.producers;
-        if(nome == null) return producers;
+    private static final ProducerMapper MAPPER = ProducerMapper.INSTACE;
 
-        return producers.stream().filter(producer -> producer.getName().equalsIgnoreCase(nome)).toList();
+    @GetMapping
+    public ResponseEntity<List<ProducerGetResponse>> ListAll(@RequestParam(required = false) String nome) {
+        var producers = Producer.producers();
+        var list = MAPPER.toProducerGetResponseList(producers);
+        if (nome == null) return ResponseEntity.ok(list);
+
+        var response = list.stream().filter(p -> p.getName().equalsIgnoreCase(nome)).toList();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("{id}")
-    public Producer findById(@PathVariable Long id) {
-        return Producer.producers.stream()
-                .filter(producer -> producer.getId().equals(id))
-                .findFirst().orElse(null);
+    public ResponseEntity<ProducerGetResponse> findById(@PathVariable Long id) {
+        var getProducer = Producer.producers().stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst().map(MAPPER::toProducerGetResponse)
+                .orElse(null);
+        return ResponseEntity.ok(getProducer);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "x-api-key")
-    public ResponseEntity<Producer> save(@RequestBody Producer producer,
-                                         @RequestHeader HttpHeaders headers){
+    public ResponseEntity<ProducerPostResponse> save(@RequestBody ProducerPostRequest producerPostRequest,
+                                                     @RequestHeader HttpHeaders headers) {
 
         log.info("{}", headers);
-        producer.setId(ThreadLocalRandom.current().nextLong(1000));
-        Producer.producers.add(producer);
-        var responseHeaders = new HttpHeaders();
-        responseHeaders.add("Authorization","Minha Chave");
-        return ResponseEntity.status(HttpStatus.CREATED).headers(responseHeaders).body(producer);
+        var producer = MAPPER.toProducer(producerPostRequest);
+        Producer.producers().add(producer);
+        var response = MAPPER.toProducerPostResponse(producer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void>deleteById(@PathVariable Long id){
+        var bodyToBeDeleted = Producer.producers().stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id not found"));
+        Producer.producers().remove(bodyToBeDeleted);
+        return ResponseEntity.noContent().build();
     }
 }
 
