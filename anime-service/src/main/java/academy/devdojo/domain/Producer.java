@@ -18,18 +18,8 @@ public class Producer {
     private Long id;
     private String name;
     private LocalDateTime createdAt;
-    private static List<Producer> producers = new ArrayList<>();
 
-    static {
-        var Mappa = Producer.builder().id(1L).name("Mappa").createdAt(LocalDateTime.now()).build();
-        var KyotoAnimation = Producer.builder().id(2L).name("Kyoto Animation").createdAt(LocalDateTime.now()).build();
-        var MadHouse = Producer.builder().id(3L).name("Mad House").createdAt(LocalDateTime.now()).build();
-        producers.addAll(List.of(Mappa, KyotoAnimation, MadHouse));
-    }
 
-    public static List<Producer> producers() {
-        return producers;
-    }
 
     //@JsonProperties é uma tradução de recebimento de JSON, para aceitar nomes diferentes dos cadastrados no Model
     //Consumes = pode ser setado como JSON ou XML, quer dizer que a aplicação só aceita XML ou JSON.
