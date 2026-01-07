@@ -29,10 +29,10 @@ public class ProducerController {
 
 
     @GetMapping
-    public ResponseEntity<List<ProducerGetResponse>> ListAll(@RequestParam(required = false) String nome) {
+    public ResponseEntity<List<ProducerGetResponse>> findAll(@RequestParam(required = false) String nome) {
         var producers = service.findAll(nome);
         var getResponses = mapper.toProducerGetResponseList(producers);
-        return ResponseEntity.status(HttpStatus.CREATED).body(getResponses);
+        return ResponseEntity.status(HttpStatus.OK).body(getResponses);
     }
 
     @GetMapping("{id}")
