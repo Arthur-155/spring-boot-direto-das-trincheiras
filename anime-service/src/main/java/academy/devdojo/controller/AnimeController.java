@@ -28,7 +28,7 @@ public class AnimeController {
     public ResponseEntity <List<AnimeGetResponse>> ListAll(@RequestParam(required = false) String nome) {
         var animes = service.listAll(nome);
         var animeGetResponseList = mapper.toAnimeGetResponseList(animes);
-        return ResponseEntity.status(HttpStatus.CREATED).body(animeGetResponseList);
+        return ResponseEntity.status(HttpStatus.OK).body(animeGetResponseList);
     }
 
     @GetMapping("{id}")

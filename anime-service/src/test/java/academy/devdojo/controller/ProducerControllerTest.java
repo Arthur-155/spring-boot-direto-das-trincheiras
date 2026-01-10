@@ -98,6 +98,7 @@ class ProducerControllerTest {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
         var response = readResourceFile("producer/get-producer-id-200.json");
         var id = 1L;
+        System.out.println("A PORRA DO RESPONSE " + response);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
