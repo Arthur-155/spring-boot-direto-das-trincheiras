@@ -6,6 +6,7 @@ import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import academy.devdojo.response.ProducerPostResponse;
 import academy.devdojo.service.ProducerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -43,8 +44,8 @@ public class ProducerController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "x-api-key")
-    public ResponseEntity<ProducerPostResponse> save(@RequestBody ProducerPostRequest producerPostRequest,
-                                                     @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<ProducerPostResponse> save(@RequestBody @Valid ProducerPostRequest producerPostRequest,
+                                                     @RequestHeader HttpHeaders headers){
 
         log.info("{}", headers);
         var producer = mapper.toProducer(producerPostRequest);
@@ -55,13 +56,13 @@ public class ProducerController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void>deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.deleteByIdOrThrowNotFound(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping
-    public ResponseEntity<Void>updateProduct(@RequestBody ProducerPutRequest request){
+    public ResponseEntity<Void> updateProduct(@RequestBody @Valid ProducerPutRequest request) {
         var producerUpdated = mapper.toPutProducer(request);
         service.updateOrThrowNotFound(producerUpdated);
         return ResponseEntity.noContent().build();

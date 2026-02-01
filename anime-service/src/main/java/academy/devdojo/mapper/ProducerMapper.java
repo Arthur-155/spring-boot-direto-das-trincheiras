@@ -1,7 +1,6 @@
 package academy.devdojo.mapper;
 
 import academy.devdojo.domain.Producer;
-import academy.devdojo.request.AnimePutRequest;
 import academy.devdojo.request.ProducerPostRequest;
 import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
@@ -11,7 +10,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
@@ -22,11 +20,11 @@ public interface ProducerMapper {
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     Producer toProducer(ProducerPostRequest postRequest);
 
-    ProducerPostResponse toProducerPostResponse (Producer producer);
+    ProducerPostResponse toProducerPostResponse(Producer producer);
 
     Producer toPutProducer(ProducerPutRequest producerPutRequest);
 
-    ProducerGetResponse toProducerGetResponse (Producer producer);
+    ProducerGetResponse toProducerGetResponse(Producer producer);
 
-    List<ProducerGetResponse> toProducerGetResponseList(List<Producer>producersList);
+    List<ProducerGetResponse> toProducerGetResponseList(List<Producer> producersList);
 }

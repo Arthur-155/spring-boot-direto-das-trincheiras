@@ -15,7 +15,7 @@ public class AnimeData {
         var katekyoHitmanReborn = Anime.builder().id(1L).name("Katekyo Hitman Reborn").createdAt(LocalDateTime.now()).build();
         var codeGeass = Anime.builder().id(2L).name("Code Geass").createdAt(LocalDateTime.now()).build();
         var pokemon = Anime.builder().id(3L).name("Pokémon").createdAt(LocalDateTime.now()).build();
-        animes.addAll(List.of(katekyoHitmanReborn,codeGeass,pokemon));
+        animes.addAll(List.of(katekyoHitmanReborn, codeGeass, pokemon));
     }
 
     public List<Anime> getAnimes() {

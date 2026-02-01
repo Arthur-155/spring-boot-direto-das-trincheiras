@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Setter
@@ -18,7 +16,6 @@ public class Producer {
     private Long id;
     private String name;
     private LocalDateTime createdAt;
-
 
 
     //@JsonProperties é uma tradução de recebimento de JSON, para aceitar nomes diferentes dos cadastrados no Model

@@ -32,7 +32,7 @@ public class FuncionarioTesteController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<FuncionarioGetResponse>findById(@PathVariable Long id){
+    public ResponseEntity<FuncionarioGetResponse> findById(@PathVariable Long id) {
         var response = FuncionarioTeste.getFuncionarios()
                 .stream()
                 .filter(f -> f.getId().equals(id))
@@ -44,7 +44,7 @@ public class FuncionarioTesteController {
     }
 
     @PostMapping
-    public ResponseEntity<FuncionarioGetResponse>funcionarioPost(@RequestBody FuncionarioPostRequest funcionarioPostRequest){
+    public ResponseEntity<FuncionarioGetResponse> funcionarioPost(@RequestBody FuncionarioPostRequest funcionarioPostRequest) {
         var funcionario = MAPPER.toFuncionario(funcionarioPostRequest);
         var response = MAPPER.toFuncionarioGetResponse(funcionario);
 

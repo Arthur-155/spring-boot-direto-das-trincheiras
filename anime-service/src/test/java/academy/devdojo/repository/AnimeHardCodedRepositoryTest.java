@@ -1,5 +1,6 @@
 package academy.devdojo.repository;
 
+import academy.devdojo.commons.animes.AnimeUtils;
 import academy.devdojo.domain.Anime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,13 @@ class AnimeHardCodedRepositoryTest {
     @Mock
     private AnimeData animeData;
     private List<Anime> animeList = new ArrayList<>();
+    @InjectMocks
+    private AnimeUtils animeUtils;
+
     @BeforeEach
-    void init(){
+    void init() {
         {
-            var TokyoGhoul = Anime.builder().id(1L).name("Tokyo Ghoul").createdAt(LocalDateTime.now()).build();
-            var DeathNote = Anime.builder().id(2L).name("Death Note").createdAt(LocalDateTime.now()).build();
-            var OnePiece = Anime.builder().id(3L).name("One Piece").createdAt(LocalDateTime.now()).build();
-            animeList.addAll(List.of(TokyoGhoul,DeathNote,OnePiece));
+            animeList = animeUtils.getAnimeList();
             BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
         }
     }
@@ -37,7 +38,7 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("Find All Will returns a list with all products in the list")
     @Test
     @Order(1)
-    void findAll_ReturnsListWithAllAnimes_WhenSuccessful(){
+    void findAll_ReturnsListWithAllAnimes_WhenSuccessful() {
         var animes = repository.findAll();
         Assertions.assertThat(animes).isNotNull().hasSameElementsAs(animeList);
     }
@@ -45,7 +46,7 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("Find by name returns an empty list when the name is null")
     @Test
     @Order(2)
-    void findByName_ReturnsEmptyList_WhenNameIsNull(){
+    void findByName_ReturnsEmptyList_WhenNameIsNull() {
         var animeNameReceived = repository.findByName(null);
 
         Assertions.assertThat(animeNameReceived).isNotNull().isEmpty();
@@ -54,9 +55,9 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("Find by name returns the found name when the name exists")
     @Test
     @Order(3)
-    void findByName_ReturnsFoundName_WhenNameExists(){
+    void findByName_ReturnsFoundName_WhenNameExists() {
         var expectedValue = animeList.getFirst();
-        var anime= repository.findByName(expectedValue.getName());
+        var anime = repository.findByName(expectedValue.getName());
 
         Assertions.assertThat(anime).isNotNull().contains(expectedValue);
     }
@@ -64,7 +65,7 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("Find by id returns a list with the found id")
     @Test
     @Order(4)
-    void findById_ReturnsFoundList_WhenIdIsFound(){
+    void findById_ReturnsFoundList_WhenIdIsFound() {
         var expectedValue = animeList.getFirst();
         var animeIdReceived = repository.findById(expectedValue.getId());
 
@@ -74,9 +75,8 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("save create an anime in the list")
     @Test
     @Order(5)
-    void save_createAnAnime_WhenIsSuccessful(){
-        var animeToSave = Anime.builder()
-                .id(4L).name("Naruto").createdAt(LocalDateTime.now()).build();
+    void save_createAnAnime_WhenIsSuccessful() {
+        var animeToSave = animeUtils.newAnimeToSave();
 
         var anime = repository.save(animeToSave);
 
@@ -90,7 +90,7 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("delete removes a anime")
     @Test
     @Order(6)
-    void delete_removesAnAnime_WhenIsSuccessful(){
+    void delete_removesAnAnime_WhenIsSuccessful() {
         var animeToUpdate = animeList.getFirst();
         repository.delete(animeToUpdate);
         var animesList = repository.findAll();
@@ -100,7 +100,7 @@ class AnimeHardCodedRepositoryTest {
     @DisplayName("update updates a anime")
     @Test
     @Order(7)
-    void update_updatesAnAnime_WhenIsSuccessful(){
+    void update_updatesAnAnime_WhenIsSuccessful() {
         var animeToUpdate = animeList.getFirst();
 
         animeToUpdate.setName("Jujutsu Kaisen");

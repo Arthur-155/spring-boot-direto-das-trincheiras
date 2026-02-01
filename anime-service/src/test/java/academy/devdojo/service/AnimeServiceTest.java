@@ -1,5 +1,6 @@
 package academy.devdojo.service;
 
+import academy.devdojo.commons.animes.AnimeUtils;
 import academy.devdojo.domain.Anime;
 import academy.devdojo.repository.AnimeHardCodedRepository;
 import org.assertj.core.api.Assertions;
@@ -11,13 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.class)
@@ -27,13 +25,12 @@ class AnimeServiceTest {
     @Mock
     private AnimeHardCodedRepository repository;
     private List<Anime> animes = new ArrayList<>();
+    @InjectMocks
+    private AnimeUtils animeUtils;
 
     @BeforeEach
     void init() {
-        var vagabond = Anime.builder().id(1L).name("Vagabond").createdAt(LocalDateTime.now()).build();
-        var KurokoNoBasket = Anime.builder().id(2L).name("Kuroko No Basket").createdAt(LocalDateTime.now()).build();
-        var KingInYellow = Anime.builder().id(3L).name("King In Yellow").createdAt(LocalDateTime.now()).build();
-        animes.addAll(List.of(vagabond, KurokoNoBasket, KingInYellow));
+        animes = animeUtils.getAnimeList();
     }
 
     @DisplayName("list All returns a list with all animes")
@@ -98,7 +95,7 @@ class AnimeServiceTest {
     @Test
     @Order(6)
     void save_createsAnObject_whenSuccessful() {
-        var animeToSave = Anime.builder().id(99L).name("Attack On Titan").createdAt(LocalDateTime.now()).build();
+        var animeToSave = animeUtils.newAnimeToSave();
 
         BDDMockito.when(repository.save(animeToSave)).thenReturn(animeToSave);
 
