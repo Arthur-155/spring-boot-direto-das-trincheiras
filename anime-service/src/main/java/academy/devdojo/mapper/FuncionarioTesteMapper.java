@@ -20,5 +20,5 @@ public interface FuncionarioTesteMapper {
 
     FuncionarioGetResponse toFuncionarioGetResponse(FuncionarioTeste funcionarioTeste);
 
-    List<FuncionarioGetResponse> toFuncionarioTesteList(List<FuncionarioTeste>funcionarios);
+    List<FuncionarioGetResponse> toFuncionarioTesteList(List<FuncionarioTeste> funcionarios);
 }

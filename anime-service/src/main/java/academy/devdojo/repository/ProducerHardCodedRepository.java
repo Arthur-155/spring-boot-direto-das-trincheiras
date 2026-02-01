@@ -5,6 +5,7 @@ import external.dependency.Connection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,12 +15,14 @@ import java.util.Optional;
 public class ProducerHardCodedRepository {
     private final Connection connectionMongo;
     private final ProducerData producerData;
+    private final Connection connection;
 
     public List<Producer> findAll() {
+        log.info("connection {}", connection);
         return producerData.getProducers();
     }
 
-    public List<Producer>findByName(String nome){
+    public List<Producer> findByName(String nome) {
         log.debug(connectionMongo);
         return producerData.getProducers()
                 .stream()
@@ -27,23 +30,23 @@ public class ProducerHardCodedRepository {
                 .toList();
     }
 
-    public Optional<Producer>findById(Long id){
+    public Optional<Producer> findById(Long id) {
         return producerData.getProducers()
                 .stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst();
     }
 
-    public Producer save (Producer producer){
+    public Producer save(Producer producer) {
         producerData.getProducers().add(producer);
         return producer;
     }
 
-    public void deleteById (Producer producer){
+    public void deleteById(Producer producer) {
         producerData.getProducers().remove(producer);
     }
 
-    public void update (Producer producer){
+    public void update(Producer producer) {
         deleteById(producer);
         save(producer);
     }

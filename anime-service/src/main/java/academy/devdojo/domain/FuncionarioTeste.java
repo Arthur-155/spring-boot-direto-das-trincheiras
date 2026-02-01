@@ -3,7 +3,6 @@ package academy.devdojo.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ public class FuncionarioTeste {
     private String name;
     private String cargo;
     private LocalDateTime createdAt;
-    private static List<FuncionarioTeste>funcionarios = new ArrayList<>();
+    private static List<FuncionarioTeste> funcionarios = new ArrayList<>();
 
-    static{
+    static {
         var Arthur = FuncionarioTeste.builder().id(1L).name("Arthur Vieira").cargo("Analista Trainee").createdAt(LocalDateTime.now()).build();
         funcionarios.add(Arthur);
     }
