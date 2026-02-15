@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/users")
-//get -> getId -> post -> delete -> put
 public class UserServiceController {
     private final UserServiceService service;
     private final UserServiceMapper mapper;

@@ -18,7 +18,6 @@ import java.util.List;
 public interface UserServiceMapper {
     UserServiceMapper INSTANCE = Mappers.getMapper(UserServiceMapper.class);
 
-    @Mapping(target = "id", expression = "java(java.util.concurrent.ThreadLocalRandom.current().nextLong(1000))")
     UserService toUserService(UserServicePostRequest postRequest);
 
     UserServiceGetResponse userServiceGetResponse (UserService userService);
